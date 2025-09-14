@@ -23,8 +23,12 @@ jobs:
       - name: Build
         run: python -m build
       - name: Publish
-        if: ${{ secrets.PYPI_API_TOKEN != '' }}
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload dist/*
+        run: |
+          if [ -z "${TWINE_PASSWORD}" ]; then
+            echo "PYPI_API_TOKEN not set; skipping publish."
+            exit 0
+          fi
+          twine upload dist/*
