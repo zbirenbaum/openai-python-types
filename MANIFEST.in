@@ -1,0 +1,7 @@
+include README.md
+include pyproject.toml
+recursive-include src *.py
+prune .github
+prune .venv
+prune tests
+exclude scripts/*
