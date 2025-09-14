@@ -3,7 +3,7 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .audio_transcription import AudioTranscription
 from .realtime_truncation import RealtimeTruncation

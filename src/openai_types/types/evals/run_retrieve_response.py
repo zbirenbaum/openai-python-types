@@ -5,7 +5,7 @@ from typing_extensions import Literal, Annotated, TypeAlias
 
 from pydantic import Field as FieldInfo
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .eval_api_error import EvalAPIError
 from ..responses.tool import Tool

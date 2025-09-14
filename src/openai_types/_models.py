@@ -9,6 +9,11 @@ try:
         from pydantic import ConfigDict  # pydantic v2
     except Exception:  # pragma: no cover
         ConfigDict = dict  # type: ignore
+    try:
+        # pydantic v2 location
+        from pydantic.generics import GenericModel as _GenericModel  # type: ignore
+    except Exception:  # pragma: no cover
+        _GenericModel = _BaseModel  # type: ignore[misc,assignment]
 except Exception as e:  # pragma: no cover
     raise RuntimeError(
         "openai-python-types requires pydantic>=2 at runtime"
@@ -30,4 +35,8 @@ class BaseModel(_BaseModel):
     )
 
 
-__all__ = ["BaseModel"]
+class GenericModel(_GenericModel):
+    pass
+
+
+__all__ = ["BaseModel", "GenericModel"]

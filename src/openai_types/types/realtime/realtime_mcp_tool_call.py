@@ -3,7 +3,7 @@
 from typing import Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .realtime_mcphttp_error import RealtimeMcphttpError
 from .realtime_mcp_protocol_error import RealtimeMcpProtocolError

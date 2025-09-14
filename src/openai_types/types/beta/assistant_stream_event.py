@@ -4,7 +4,7 @@ from typing import Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
 from .thread import Thread
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .threads.run import Run
 from .threads.message import Message

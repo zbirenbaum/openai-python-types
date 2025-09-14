@@ -3,7 +3,7 @@
 from typing import List, Union
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .text_content import TextContent
 from .refusal_content import RefusalContent

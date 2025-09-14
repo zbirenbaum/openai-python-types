@@ -3,7 +3,7 @@
 from typing import Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from ...._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ...._models import BaseModel
 from .session_update_event import SessionUpdateEvent
 from .response_cancel_event import ResponseCancelEvent

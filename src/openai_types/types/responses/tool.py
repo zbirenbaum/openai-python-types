@@ -4,7 +4,7 @@ from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
 from . import web_search_tool
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .custom_tool import CustomTool
 from .computer_tool import ComputerTool

@@ -3,7 +3,7 @@
 from typing import Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 
 __all__ = ["RealtimeAudioFormats", "AudioPCM", "AudioPCMU", "AudioPCMA"]

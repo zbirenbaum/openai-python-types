@@ -3,7 +3,7 @@
 from typing import Union
 from typing_extensions import Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .realtime_session_create_response import RealtimeSessionCreateResponse
 from .realtime_transcription_session_create_response import RealtimeTranscriptionSessionCreateResponse

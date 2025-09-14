@@ -3,7 +3,7 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from ..._models import BaseModel
 from .easy_input_message import EasyInputMessage
 from .response_output_message import ResponseOutputMessage

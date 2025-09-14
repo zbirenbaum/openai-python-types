@@ -3,10 +3,10 @@
 from typing import TYPE_CHECKING, List, Union, Generic, TypeVar, Optional
 from typing_extensions import Annotated, TypeAlias
 
-from ..._utils import PropertyInfo
+from .._utils import PropertyInfo
 from .response import Response
 from ..._models import GenericModel
-from ..._utils._transform import PropertyInfo
+from .._utils._transform import PropertyInfo
 from .response_output_item import (
     McpCall,
     McpListTools,
