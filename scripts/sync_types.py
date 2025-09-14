@@ -11,11 +11,6 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
-try:
-    import tomllib  # py311+
-except Exception:  # pragma: no cover
-    import tomli as tomllib  # type: ignore
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
@@ -56,14 +51,7 @@ def detect_latest_tag(repo_url: str) -> str:
 
 
 def read_upstream_version(src_root: Path) -> str:
-    # Try pyproject first
-    pj = src_root / "pyproject.toml"
-    if pj.exists():
-        data = tomllib.loads(pj.read_text())
-        ver = data.get("project", {}).get("version")
-        if isinstance(ver, str):
-            return ver
-    # Fallback to src/openai/__init__.py __version__
+    # Read src/openai/__init__.py __version__
     init_py = src_root / "src" / "openai" / "__init__.py"
     if init_py.exists():
         m = re.search(r"__version__\s*=\s*['\"]([^'\"]+)['\"]", init_py.read_text())
@@ -78,7 +66,24 @@ def clone_upstream(repo_url: str, ref: str | None) -> tuple[Path, str]:
     run(["git", "remote", "add", "origin", repo_url], cwd=tmp)
     run(["git", "fetch", "--depth", "1", "origin", ref or "HEAD"], cwd=tmp)
     run(["git", "checkout", "FETCH_HEAD"], cwd=tmp)
-    version = read_upstream_version(tmp)
+    version = None
+    if ref and re.match(r"^v?\d+\.\d+\.\d+$", ref):
+        version = ref[1:] if ref.startswith("v") else ref
+    if not version:
+        try:
+            version = read_upstream_version(tmp)
+        except Exception:
+            pass
+    if not version:
+        # Fallback to git describe
+        try:
+            desc = run(["git", "describe", "--tags", "--abbrev=0"], cwd=tmp)
+            if re.match(r"^v?\d+\.\d+\.\d+$", desc):
+                version = desc[1:] if desc.startswith("v") else desc
+        except Exception:
+            pass
+    if not version:
+        raise RuntimeError("Could not determine upstream version")
     return tmp, version
 
 
@@ -121,7 +126,7 @@ from __future__ import annotations
 from pathlib import Path
 
 _here = Path(__file__)
-__path__ = [str(_here.with_name('types').joinpath(_here.parent.name))]
+__path__ = [str(_here.parent.parent.joinpath('types', _here.parent.name))]
 """.lstrip()
             )
         elif entry.suffix == ".py" and entry.name != "__init__.py":
@@ -135,28 +140,7 @@ __path__ = [str(_here.with_name('types').joinpath(_here.parent.name))]
 
 def update_pyproject_version(new_version: str) -> None:
     pj = ROOT / "pyproject.toml"
-    data = tomllib.loads(pj.read_text())
-    data.setdefault("project", {})["version"] = new_version
-    # Minimal TOML writer to avoid extra dependency
-    def dump_toml(d: dict, indent: int = 0) -> str:
-        out_lines: list[str] = []
-        for section, body in d.items():
-            if isinstance(body, dict):
-                out_lines.append(f"[{section}]")
-                out_lines.append(dump_toml(body, indent + 2))
-            else:
-                if isinstance(body, list):
-                    out_lines.append(f"{section} = [")
-                    for item in body:
-                        out_lines.append(f"  {item!r},")
-                    out_lines.append("]")
-                elif isinstance(body, str):
-                    out_lines.append(f"{section} = {body!r}")
-                else:
-                    out_lines.append(f"{section} = {body}")
-        return "\n".join(out_lines)
-
-    # Use a simpler approach: string replace the version assignment
+    # Use a simple string replace of the version assignment
     txt = pj.read_text()
     new_txt = re.sub(
         r"(?m)^version\s*=\s*['\"]([^'\"]+)['\"]",
@@ -190,4 +174,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

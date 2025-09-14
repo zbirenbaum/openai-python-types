@@ -26,9 +26,11 @@ Syncing with Upstream
   - Generate import proxies
   - Bump this package version to match upstream
   - Open a PR with changes
+  - Build a wheel and run a smoke import test against it
 
 Releasing
-- Optional workflow (`.github/workflows/release.yml`) publishes to PyPI on tags `v*.*.*`.
+- On PR merge to `main`, a workflow (`.github/workflows/tag-on-merge.yml`) tags the repo as `v<version>` if `pyproject.toml` version changed.
+- Publishing workflow (`.github/workflows/release.yml`) automatically uploads to PyPI on tag push `v*.*.*`.
 - Configure repository secret `PYPI_API_TOKEN` for automated publishing.
 
 Local Development

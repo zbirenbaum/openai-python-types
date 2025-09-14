@@ -23,9 +23,8 @@ jobs:
       - name: Build
         run: python -m build
       - name: Publish
-        if: secrets.PYPI_API_TOKEN != ''
+        if: ${{ secrets.PYPI_API_TOKEN != '' }}
         env:
-          TWINE_USERNAME: zbirenbaum
+          TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: twine upload dist/*
-
