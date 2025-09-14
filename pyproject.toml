@@ -5,9 +5,9 @@ description = "Lightweight package exposing only OpenAI's Python types as `opena
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-  "pydantic>=2",
-  "tomli; python_version<'3.11'",
-  "typing-extensions>=4.7",
+  "typing-extensions>=4.11",
+  "pydantic>=1.9.0, <3",
+  "tomli",
 ]
 
 [project.urls]
